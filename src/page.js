@@ -10,7 +10,7 @@ function launchPage() {
   addProjectDropDownContent();
   addProjectBtnFunctionality();
   getProjectData();
-  changeTab("inbox-main", "Inbox");
+  changeTab("inbox-main", "Inbox", false);
 }
 
 // Add project dropDownContent //

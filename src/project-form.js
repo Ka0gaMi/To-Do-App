@@ -4,6 +4,8 @@ import {
   appendToTasks,
   createTaskDiv,
   checked,
+  checkDueDateColor,
+  changePriorityColor,
 } from "./task";
 
 // Generate random project ID //
@@ -59,6 +61,7 @@ function createProjectDiv(projectTitle, id) {
 
 function getProjectData() {
   const projectForm = document.querySelector(".add-project-form");
+  const projectMainDiv = document.getElementById("add-project-div");
 
   projectForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -74,6 +77,7 @@ function getProjectData() {
     updateProjects(project);
 
     projectForm.reset();
+    projectMainDiv.classList.remove("active");
   });
 }
 
@@ -111,13 +115,15 @@ function addProjectDivFunctionality() {
   const projectDiv = document.querySelector(".project-div");
 
   projectDiv.addEventListener("click", (e) => {
-    changeTab("project-main", e.target.textContent, true);
+    changeTab("project-main", e.target.textContent, true, e.target.id);
     addTasksFromProjectArr(e.target.id);
+    setSelectedProject(e.target.id);
 
     const projectName = document.querySelector(".main-header-title");
     projectName.setAttribute("id", e.target.id);
     console.log(projectsArr);
     projectNameChangeFunctionality();
+    changePriorityColor();
   });
 }
 
@@ -172,6 +178,15 @@ function updateProjectFromArr() {
   }
 }
 
+// Set selected option to project //
+
+function setSelectedProject(projectId) {
+  const projectSelect = document.getElementById("project");
+  const option = projectSelect.querySelector(`option[value="${projectId}"]`);
+
+  option.setAttribute("selected", "selected");
+}
+
 // Add task to project //
 
 function addTaskToProjectArray(projectId, task) {
@@ -206,6 +221,7 @@ function addTasksFromProjectArr(projectId) {
   } else {
     return;
   }
+  checkDueDateColor();
 }
 
 export {

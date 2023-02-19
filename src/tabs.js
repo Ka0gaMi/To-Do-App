@@ -7,6 +7,7 @@ import {
   checkTodayTasks,
   checkUpcomingTasks,
   checkDueDateColor,
+  changePriorityColor,
 } from "./task";
 
 import { updateProjectFromArr } from "./project-form";
@@ -14,9 +15,10 @@ import moment from "moment";
 
 // Tab creator //
 
-function createTab(tabname, title, contentEditable) {
+function createTab(tabname, title, contentEditable, tabId) {
   const tab = document.createElement("div");
   tab.classList.add(tabname);
+  tab.setAttribute("id", tabId);
 
   tab.appendChild(createMainHeader(title, contentEditable));
   tab.appendChild(createTasksTab());
@@ -103,11 +105,13 @@ function createInputDiv(title) {
   formTitle.setAttribute("type", "text");
   formTitle.setAttribute("placeholder", "Title");
   formTitle.setAttribute("id", "title");
+  formTitle.setAttribute("required", "required");
 
   const formDescription = document.createElement("input");
   formDescription.setAttribute("type", "text");
   formDescription.setAttribute("placeholder", "Description");
   formDescription.setAttribute("id", "description");
+  formDescription.setAttribute("required", "required");
 
   formInputDiv.appendChild(formTitle);
   formInputDiv.appendChild(formDescription);
@@ -131,6 +135,7 @@ function createInputButtons(title) {
   dateButtonInput.setAttribute("type", "date");
   dateButtonInput.setAttribute("id", "due-date");
   dateButtonInput.classList.add("datePicker");
+  dateButtonInput.setAttribute("value", moment().format("YYYY-MM-DD"));
   if (title === "Today") {
     dateButtonInput.setAttribute("min", moment().format("YYYY-MM-DD"));
     dateButtonInput.setAttribute("max", moment().format("YYYY-MM-DD"));
@@ -160,6 +165,7 @@ function createPrioritySelect() {
   prioritySelect.setAttribute("id", "priority");
   prioritySelect.classList.add("priority");
   prioritySelect.setAttribute("name", "priority");
+  prioritySelect.setAttribute("required", "required");
 
   const prioritySelectOption1 = document.createElement("option");
   prioritySelectOption1.setAttribute("value", "none");
@@ -214,7 +220,6 @@ function createProjectSelect() {
 
   const projectSelectOption1 = document.createElement("option");
   projectSelectOption1.setAttribute("value", "inbox");
-  projectSelectOption1.setAttribute("selected", "selected");
   projectSelectOption1.textContent = "Inbox";
 
   projectSelect.appendChild(projectSelectOption1);
@@ -302,10 +307,10 @@ function createProjectForm() {
 
 // Adding the tab to the DOM //
 
-function addTab(tabname, title, contentEditable = false) {
+function addTab(tabname, title, contentEditable = false, tabId) {
   const mainHead = document.querySelector(".main-head");
 
-  mainHead.appendChild(createTab(tabname, title, contentEditable));
+  mainHead.appendChild(createTab(tabname, title, contentEditable, tabId));
 
   taskFormFunctionality();
   datePickerButtonFunctionality();
@@ -324,9 +329,9 @@ function removeTab() {
 
 // Change tab functionality //
 
-function changeTab(tabname, title, contentEditable = false) {
+function changeTab(tabname, title, contentEditable = false, tabId = "inbox") {
   removeTab();
-  addTab(tabname, title, contentEditable);
+  addTab(tabname, title, contentEditable, tabId);
   if (title === "Inbox") {
     checkInboxTasks();
   } else if (title === "Today") {
@@ -335,6 +340,7 @@ function changeTab(tabname, title, contentEditable = false) {
     checkUpcomingTasks();
   }
   checkDueDateColor();
+  changePriorityColor();
 }
 
 // Show button functionality //

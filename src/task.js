@@ -1,4 +1,5 @@
 import { format, parseISO } from "date-fns";
+import { el } from "date-fns/locale";
 import moment from "moment";
 import { addTaskToProjectArray } from "./project-form";
 
@@ -30,10 +31,8 @@ function datePickerTextFunctionality() {
 }
 
 function datePickerReset() {
-  const datePicker = document.querySelector(".datePicker");
   const dateButtonSpan = document.getElementById("date-span");
 
-  datePicker.value = "";
   dateButtonSpan.textContent = "Due Date";
 }
 
@@ -221,15 +220,16 @@ function getTaskData() {
 
     const taskDiv = createTaskDiv(task);
 
-    if (project === "inbox") {
+    if (e.target.parentElement.parentElement.id === "inbox") {
       appendToTasks(taskDiv);
-    } else {
+      checkPriority(priority, task.id);
+      changeDueDateColor(task);
+    } else if (e.target.parentElement.parentElement.id === project) {
       addTaskToProjectArray(project, task);
       appendToTasks(taskDiv);
+      checkPriority(priority, task.id);
+      changeDueDateColor(task);
     }
-
-    checkPriority(priority, task.id);
-    changeDueDateColor(task);
 
     taskForm.reset();
     datePickerReset();
@@ -391,6 +391,28 @@ function checkDueDateColor() {
   }
 }
 
+// Change priority color //
+
+function changePriorityColor() {
+  for (const task in tasks) {
+    const inputPriority = document.querySelector(
+      `input[id="${tasks[task].id}"]`
+    );
+
+    if (inputPriority === null) {
+      return;
+    }
+
+    if (tasks[task].priority === "high") {
+      inputPriority.classList.add("high");
+    } else if (tasks[task].priority === "medium") {
+      inputPriority.classList.add("medium");
+    } else {
+      inputPriority.classList.add("low");
+    }
+  }
+}
+
 export {
   datePickerButtonFunctionality,
   datePickerTextFunctionality,
@@ -404,4 +426,5 @@ export {
   checkTodayTasks,
   checkUpcomingTasks,
   checkDueDateColor,
+  changePriorityColor,
 };

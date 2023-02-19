@@ -12,17 +12,17 @@ inboxBtn.addEventListener("click", () => {
 const todayBtn = document.getElementById("today");
 
 todayBtn.addEventListener("click", () => {
-  changeTab("today-main", "Today");
+  changeTab("today-main", "Today", false);
 });
 
 const upcomingBtn = document.getElementById("upcoming");
 
 upcomingBtn.addEventListener("click", () => {
-  changeTab("upcoming-main", "Upcoming");
+  changeTab("upcoming-main", "Upcoming", false);
 });
 
 const homeBtn = document.getElementById("home");
 
 homeBtn.addEventListener("click", () => {
-  changeTab("today-main", "Today");
+  changeTab("today-main", "Today", false);
 });

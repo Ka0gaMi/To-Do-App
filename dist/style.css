@@ -666,6 +666,7 @@ hr {
 
 .project-div > span {
   font-size: 18px;
+  pointer-events: none;
 }
 
 .due-date-div {
@@ -694,3 +695,5 @@ hr {
 .due-date-div > span {
   font-size: 14px;
 }
+
+/* Search bar */
