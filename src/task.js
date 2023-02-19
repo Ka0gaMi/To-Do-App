@@ -312,6 +312,40 @@ function checkInboxTasks() {
   }
 }
 
+// Check task array for today tasks //
+
+function checkTodayTasks() {
+  for (const task in tasks) {
+    if (checkDueDate(tasks[task]) === "today") {
+      if (tasks[task].completed === true) {
+        const taskDiv = createTaskDiv(tasks[task]);
+        appendToCompleted(taskDiv);
+        checked(task);
+      } else {
+        const taskDiv = createTaskDiv(tasks[task]);
+        appendToTasks(taskDiv);
+      }
+    }
+  }
+}
+
+// Check task array for upcoming tasks //
+
+function checkUpcomingTasks() {
+  for (const task in tasks) {
+    if (checkDueDate(tasks[task]) === "future") {
+      if (tasks[task].completed === true) {
+        const taskDiv = createTaskDiv(tasks[task]);
+        appendToCompleted(taskDiv);
+        checked(task);
+      } else {
+        const taskDiv = createTaskDiv(tasks[task]);
+        appendToTasks(taskDiv);
+      }
+    }
+  }
+}
+
 // Check if due date is today //
 
 function checkDueDate(task) {
@@ -329,12 +363,16 @@ function checkDueDate(task) {
   }
 }
 
-// Change due-date-div color if due date is today //
+// Change due-date-div color according to due date //
 
 function changeDueDateColor(task) {
   const dueDateDiv = document.querySelector(
     `div[id="${task.id}"].due-date-div`
   );
+
+  if (dueDateDiv === null) {
+    return;
+  }
 
   if (checkDueDate(task) === "today") {
     dueDateDiv.classList.add("due-today");
@@ -342,6 +380,14 @@ function changeDueDateColor(task) {
     dueDateDiv.classList.add("due-past");
   } else {
     dueDateDiv.classList.add("due-future");
+  }
+}
+
+// Check due date color in  tasks array //
+
+function checkDueDateColor() {
+  for (const task in tasks) {
+    changeDueDateColor(tasks[task]);
   }
 }
 
@@ -355,4 +401,7 @@ export {
   createTaskDiv,
   checked,
   checkInboxTasks,
+  checkTodayTasks,
+  checkUpcomingTasks,
+  checkDueDateColor,
 };

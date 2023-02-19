@@ -4,6 +4,9 @@ import {
   getTaskData,
   taskFormFunctionality,
   checkInboxTasks,
+  checkTodayTasks,
+  checkUpcomingTasks,
+  checkDueDateColor,
 } from "./task";
 
 import { updateProjectFromArr } from "./project-form";
@@ -316,7 +319,12 @@ function changeTab(tabname, title, contentEditable = false) {
   addTab(tabname, title, contentEditable);
   if (title === "Inbox") {
     checkInboxTasks();
+  } else if (title === "Today") {
+    checkTodayTasks();
+  } else if (title === "Upcoming") {
+    checkUpcomingTasks();
   }
+  checkDueDateColor();
 }
 
 // Show button functionality //
