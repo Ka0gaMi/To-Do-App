@@ -29,6 +29,14 @@ function datePickerTextFunctionality() {
   });
 }
 
+function datePickerReset() {
+  const datePicker = document.querySelector(".datePicker");
+  const dateButtonSpan = document.getElementById("date-span");
+
+  datePicker.value = "";
+  dateButtonSpan.textContent = "Due Date";
+}
+
 // Add task form functionality //
 
 function taskFormFunctionality() {
@@ -224,6 +232,7 @@ function getTaskData() {
     changeDueDateColor(task);
 
     taskForm.reset();
+    datePickerReset();
 
     console.log(tasks);
   });
@@ -312,9 +321,11 @@ function checkDueDate(task) {
   console.log(today);
 
   if (dueDate === today) {
-    return true;
+    return "today";
+  } else if (dueDate < today) {
+    return "past";
   } else {
-    return false;
+    return "future";
   }
 }
 
@@ -325,10 +336,12 @@ function changeDueDateColor(task) {
     `div[id="${task.id}"].due-date-div`
   );
 
-  if (checkDueDate(task) === true) {
+  if (checkDueDate(task) === "today") {
     dueDateDiv.classList.add("due-today");
+  } else if (checkDueDate(task) === "past") {
+    dueDateDiv.classList.add("due-past");
   } else {
-    dueDateDiv.classList.remove("due-today");
+    dueDateDiv.classList.add("due-future");
   }
 }
 

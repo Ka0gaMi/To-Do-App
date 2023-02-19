@@ -673,11 +673,18 @@ hr {
   margin-top: 5px;
   display: flex;
   gap: 5px;
+}
+
+.due-date-div.due-past {
   color: #800000;
 }
 
 .due-date-div.due-today {
   color: green;
+}
+
+.due-date-div.due-future {
+  color: #000080;
 }
 
 .due-date-div > .uil.uil-calender {
