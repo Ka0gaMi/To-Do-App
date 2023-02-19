@@ -10,6 +10,7 @@ import {
 } from "./task";
 
 import { updateProjectFromArr } from "./project-form";
+import moment from "moment";
 
 // Tab creator //
 
@@ -20,7 +21,7 @@ function createTab(tabname, title, contentEditable) {
   tab.appendChild(createMainHeader(title, contentEditable));
   tab.appendChild(createTasksTab());
   tab.appendChild(createAddTaskBtn());
-  tab.appendChild(createAddTaskForm());
+  tab.appendChild(createAddTaskForm(title));
   tab.appendChild(createCompletedTab());
   tab.appendChild(createProjectForm());
 
@@ -79,14 +80,14 @@ function createAddTaskBtn() {
 
 // Creating the form //
 
-function createAddTaskForm() {
+function createAddTaskForm(title) {
   const addTaskFormDiv = document.createElement("div");
   addTaskFormDiv.classList.add("add-task-form");
 
   const addTaskForm = document.createElement("form");
   addTaskForm.classList.add("task-form");
 
-  addTaskForm.appendChild(createInputDiv());
+  addTaskForm.appendChild(createInputDiv(title));
   addTaskForm.appendChild(document.createElement("hr"));
   addTaskForm.appendChild(createFormButtons());
   addTaskFormDiv.appendChild(addTaskForm);
@@ -94,7 +95,7 @@ function createAddTaskForm() {
   return addTaskFormDiv;
 }
 
-function createInputDiv() {
+function createInputDiv(title) {
   const formInputDiv = document.createElement("div");
   formInputDiv.classList.add("form-input");
 
@@ -110,12 +111,12 @@ function createInputDiv() {
 
   formInputDiv.appendChild(formTitle);
   formInputDiv.appendChild(formDescription);
-  formInputDiv.appendChild(createInputButtons());
+  formInputDiv.appendChild(createInputButtons(title));
 
   return formInputDiv;
 }
 
-function createInputButtons() {
+function createInputButtons(title) {
   const inputButtons = document.createElement("div");
   inputButtons.classList.add("input-buttons");
 
@@ -130,6 +131,15 @@ function createInputButtons() {
   dateButtonInput.setAttribute("type", "date");
   dateButtonInput.setAttribute("id", "due-date");
   dateButtonInput.classList.add("datePicker");
+  if (title === "Today") {
+    dateButtonInput.setAttribute("min", moment().format("YYYY-MM-DD"));
+    dateButtonInput.setAttribute("max", moment().format("YYYY-MM-DD"));
+  } else if (title === "Upcoming") {
+    dateButtonInput.setAttribute(
+      "min",
+      moment().add(1, "days").format("YYYY-MM-DD")
+    );
+  }
 
   const dateButtonSpan = document.createElement("span");
   dateButtonSpan.setAttribute("id", "date-span");
