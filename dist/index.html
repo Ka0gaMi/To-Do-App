@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
+    />
+    <script src="main.js" defer></script>
+    <title>To-Do app</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="head">
+        <div class="logo">
+          <img src="check-circle.svg" class="logo-img" />
+          <h1>TO-DO APP</h1>
+        </div>
+        <div class="header">
+          <div class="leftbar">
+            <button class="menu-btn" id="menu-btn">
+              <i class="uil uil-bars"></i>
+            </button>
+            <a href="#today"><i class="uil uil-estate"></i></a>
+            <label for="search">
+              <input type="search" id="search" />
+              <span><i class="uil uil-search"></i></span>
+            </label>
+          </div>
+        </div>
+        <div class="rightbar"></div>
+      </div>
+      <div class="menu" id="menu">
+        <div class="menu-main">
+          <div
+            class="inbox"
+            id="inbox"
+          >
+            <a>
+              <i class="uil uil-inbox"></i>
+              <span class="menu-text">Inbox</span>
+            </a>
+          </div>
+          <div
+            class="today"
+            id="today"
+          >
+            <a>
+              <i class="uil uil-calender"></i>
+              <span class="menu-text">Today</span>
+            </a>
+          </div>
+          <div
+            class="upcoming"
+            id="upcoming"
+          >
+            <a>
+              <i class="uil uil-calendar-alt"></i>
+              <span class="menu-text">Upcoming</span>
+            </a>
+          </div>
+        </div>
+        <div class="projects">
+          <a href="#projects" id="projects">
+            <div>
+              <i class="uil uil-folder"></i>
+              <span class="menu-text">Projects</span>
+            </div>
+            <div class="slide-down-buttons">
+              <div class="add-project-btn" id="add-project">
+                <i class="uil uil-plus"></i>
+              </div>
+              <div class="slide-down">
+                <i class="uil uil-angle-down"></i>
+              </div>
+            </div>
+          </a>
+          <div id="dropdown" class="dropdown-content">
+          </div>
+        </div>
+      </div>
+      <div class="main">
+        <div class="main-head">
+          <div class="inbox-main">
+            <div class="main-header">
+              <h3>Inbox</h3>
+              <button class="show-done" id="show-done">
+                <i class="uil uil-eye-slash"></i>
+              </button>
+            </div>
+            <div class="div-tasks">
+              <div class="label-tasks">
+                <label class="tasks" for="task1">
+                  <input class="round" type="checkbox" id="task1" />
+                  <span class="task-text">Task 1</span>
+                </label>
+                <div class="comment">
+                  <span class="comment">Comment 1</span>
+                </div>
+              </div>
+              <div class="label-tasks">
+                <label class="tasks" for="task2">
+                  <input class="round" type="checkbox" id="task2" />
+                  <span class="task-text">Task 2</span>
+                </label>
+                <div class="comment">
+                  <span class="comment">Comment 2</span>
+                </div>
+              </div>
+              <div class="label-tasks">
+                <label class="tasks" for="task3">
+                  <input class="round" type="checkbox" id="task3" />
+                  <span class="task-text">Task 3</span>
+                </label>
+                <div class="comment">
+                  <span class="comment">Comment 3</span>
+                </div>
+              </div>
+            </div>
+            <div class="add-task-button">
+              <button class="add-task" id="add-task">
+                <i class="uil uil-plus"></i>
+                <span>Add task</span>
+              </button>
+            </div>
+            <div class="add-task-form">
+              <form class="task-form">
+                <div class="form-input">
+                  <input type="text" placeholder="Task name" id="title" />
+                  <input type="text" placeholder="Description" id="description" />
+                  <div class="input-buttons">
+                    <button class="date-picker">
+                      <i class="uil uil-calendar-alt"></i>
+                      <input type="date" class="datePicker" id="due-date" required>
+                      <span>Due date</span>
+                    </button>
+                    <select name="priority" id="priority" class="priority" required>
+                      <option value="none" disabled>Priority</option>
+                      <option value="high" class="high">High</option>
+                      <option value="medium" class="medium">Medium</option>
+                      <option value="low" class="low">Low</option>
+                      <option value="no-priority" class="no-priority">No priority</option>
+                    </select>
+                  </div>
+                </div>
+                <hr />
+                <div class="form-buttons">
+                  <select name="project" id="project" class="project">
+                    <option value="inbox" selected>Inbox</option>
+                    <option value="project1">Project 1</option>
+                    <option value="project2">Project 2</option>
+                    <option value="project3">Project 3</option>
+                  </select>
+                  <div class="main-form-buttons">
+                    <button class="add-task-cancel" type="reset">
+                      <span>Cancel</span>
+                    </button>
+                    <button class="add-task-submit" type="submit">
+                      <span>Add task</span>
+                  </div>
+                  </button>
+                </div>
+                </button>
+              </form>
+            </div>
+            <div class="completed">
+              <h3>Completed</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="add-project" id="add-project-div">
+        <form class="add-project-form">
+          <div class="form-input">
+            <input type="text" placeholder="Project name" id="project-title" />
+          </div>
+          <div class="form-buttons">
+              <button class="add-project-cancel" id="add-project-cancel" type="reset">
+                <span>Cancel</span>
+              </button>
+              <button class="add-project-submit" id="add-project-submit" type="submit">
+                <span>Add project</span>
+              </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
