@@ -1,4 +1,6 @@
 import { format, parseISO } from "date-fns";
+import moment from "moment";
+import { addTaskToProjectArray } from "./project-form";
 
 const labels = document.querySelectorAll(".tasks");
 
@@ -60,13 +62,15 @@ const tasks = {};
 
 // Task factory function //
 
-function createTask(id, title, description, dueDate, priority) {
+function createTask(id, title, description, dueDate, priority, project) {
   const task = {
     id,
     title,
     description,
     dueDate,
     priority,
+    project,
+    completed: false,
   };
 
   return task;
@@ -86,6 +90,7 @@ function createTaskDiv(task) {
 
   taskDiv.appendChild(createTaskLabel(task));
   taskDiv.appendChild(createCommentDiv(task));
+  taskDiv.appendChild(createDueDateDiv(task));
 
   return taskDiv;
 }
@@ -108,6 +113,8 @@ function createTaskLabel(task) {
       labelTask.classList.add("done");
       label.classList.add("done");
 
+      tasks[e.target.id].completed = true;
+
       appendToCompleted(labelTask);
     } else {
       const labelTask = e.target.parentElement.parentElement;
@@ -115,6 +122,8 @@ function createTaskLabel(task) {
 
       labelTask.classList.remove("done");
       label.classList.remove("done");
+
+      tasks[e.target.id].completed = false;
 
       appendToTasks(labelTask);
     }
@@ -143,6 +152,40 @@ function createCommentDiv(task) {
   return commentDiv;
 }
 
+// Create Due Date div //
+
+function createDueDateDiv(task) {
+  const dueDateDiv = document.createElement("div");
+  dueDateDiv.classList.add("due-date-div");
+  dueDateDiv.setAttribute("id", task.id);
+
+  const dueDateIcon = document.createElement("i");
+  dueDateIcon.classList.add("uil", "uil-calender");
+
+  const dueDate = document.createElement("span");
+  dueDate.classList.add("due-date-span");
+  dueDate.textContent = format(parseISO(task.dueDate), "MMM dd");
+
+  dueDateDiv.appendChild(dueDateIcon);
+  dueDateDiv.appendChild(dueDate);
+
+  return dueDateDiv;
+}
+
+// Check task priority //
+
+function checkPriority(priority, taskId) {
+  const checkbox = document.querySelector(`input[id="${taskId}"]`);
+
+  if (priority === "high") {
+    checkbox.classList.add("high");
+  } else if (priority === "medium") {
+    checkbox.classList.add("medium");
+  } else if (priority === "low") {
+    checkbox.classList.add("low");
+  }
+}
+
 // Get task data from form //
 
 function getTaskData() {
@@ -155,22 +198,34 @@ function getTaskData() {
     const description = document.getElementById("description").value;
     const dueDate = document.getElementById("due-date").value;
     const priority = document.getElementById("priority").value;
+    const project = document.getElementById("project").value;
 
     const task = createTask(
       generateRandomId(),
       title,
       description,
       dueDate,
-      priority
+      priority,
+      project
     );
 
     addTask(task);
 
     const taskDiv = createTaskDiv(task);
 
-    appendToTasks(taskDiv);
+    if (project === "inbox") {
+      appendToTasks(taskDiv);
+    } else {
+      addTaskToProjectArray(project, task);
+      appendToTasks(taskDiv);
+    }
+
+    checkPriority(priority, task.id);
+    changeDueDateColor(task);
 
     taskForm.reset();
+
+    console.log(tasks);
   });
 }
 
@@ -226,9 +281,65 @@ function appendToCompleted(label) {
   addHrTag();
 }
 
+function checked(taskId) {
+  const checkmark = document.getElementById(taskId);
+  checkmark.checked = true;
+}
+
+// Check task array for inbox tasks //
+
+function checkInboxTasks() {
+  for (const task in tasks) {
+    if (tasks[task].project === "inbox") {
+      if (tasks[task].completed === true) {
+        const taskDiv = createTaskDiv(tasks[task]);
+        appendToCompleted(taskDiv);
+        checked(task);
+      } else {
+        const taskDiv = createTaskDiv(tasks[task]);
+        appendToTasks(taskDiv);
+      }
+    }
+  }
+}
+
+// Check if due date is today //
+
+function checkDueDate(task) {
+  const today = moment().format("YYYY-MM-DD");
+  const dueDate = task.dueDate;
+
+  console.log(today);
+
+  if (dueDate === today) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// Change due-date-div color if due date is today //
+
+function changeDueDateColor(task) {
+  const dueDateDiv = document.querySelector(
+    `div[id="${task.id}"].due-date-div`
+  );
+
+  if (checkDueDate(task) === true) {
+    dueDateDiv.classList.add("due-today");
+  } else {
+    dueDateDiv.classList.remove("due-today");
+  }
+}
+
 export {
   datePickerButtonFunctionality,
   datePickerTextFunctionality,
   taskFormFunctionality,
   getTaskData,
+  appendToCompleted,
+  appendToTasks,
+  createTaskDiv,
+  checked,
+  checkInboxTasks,
 };

@@ -1,4 +1,10 @@
 import { changeTab } from "./tabs";
+import {
+  appendToCompleted,
+  appendToTasks,
+  createTaskDiv,
+  checked,
+} from "./task";
 
 // Generate random project ID //
 
@@ -21,6 +27,7 @@ function createProject(id, title) {
   const project = {
     id,
     title,
+    tasks: [],
   };
 
   return project;
@@ -64,6 +71,7 @@ function getProjectData() {
     const projectDiv = createProjectDiv(projectName, project.id);
 
     addProjectToDropdown(projectDiv);
+    updateProjects(project);
 
     projectForm.reset();
   });
@@ -104,6 +112,7 @@ function addProjectDivFunctionality() {
 
   projectDiv.addEventListener("click", (e) => {
     changeTab("project-main", e.target.textContent, true);
+    addTasksFromProjectArr(e.target.id);
 
     const projectName = document.querySelector(".main-header-title");
     projectName.setAttribute("id", e.target.id);
@@ -122,6 +131,86 @@ function projectNameChangeFunctionality() {
     projectDiv.firstChild.textContent = e.target.textContent;
     projectsArr[projectName.id].title = e.target.textContent;
   });
+
+  projectName.addEventListener("focusout", () => {
+    updateProjectFromArr();
+  });
 }
 
-export { addProjectBtnFunctionality, getProjectData };
+// Update projects //
+
+function updateProjects(project) {
+  const projectSelect = document.getElementById("project");
+
+  const option = document.createElement("option");
+  option.setAttribute("value", project.id);
+  option.textContent = project.title;
+
+  projectSelect.appendChild(option);
+}
+
+// Update project from projectArr //
+
+function updateProjectFromArr() {
+  const projectSelect = document.getElementById("project");
+
+  for (let project in projectsArr) {
+    const projectId = projectsArr[project].id;
+    const projectTitle = projectsArr[project].title;
+    let option = projectSelect.querySelector(`option[value="${projectId}"]`);
+
+    if (option) {
+      // Update existing option element's text content
+      option.textContent = projectTitle;
+    } else {
+      // Create new option element
+      option = document.createElement("option");
+      option.setAttribute("value", projectId);
+      option.textContent = projectTitle;
+      projectSelect.appendChild(option);
+    }
+  }
+}
+
+// Add task to project //
+
+function addTaskToProjectArray(projectId, task) {
+  projectsArr[projectId].tasks.push(task);
+  console.log(projectsArr);
+}
+
+// Check for tasks in projectArr //
+
+function checkForTasksInProjectArr(projectId) {
+  if (projectsArr[projectId].tasks.length > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// Add task from projectArr to DOM //
+
+function addTasksFromProjectArr(projectId) {
+  if (checkForTasksInProjectArr(projectId)) {
+    const projectTasks = projectsArr[projectId].tasks;
+
+    projectTasks.forEach((task) => {
+      if (task.completed === false) {
+        appendToTasks(createTaskDiv(task));
+      } else {
+        appendToCompleted(createTaskDiv(task));
+        checked(task.id);
+      }
+    });
+  } else {
+    return;
+  }
+}
+
+export {
+  addProjectBtnFunctionality,
+  getProjectData,
+  updateProjectFromArr,
+  addTaskToProjectArray,
+};

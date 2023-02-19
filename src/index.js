@@ -20,3 +20,9 @@ const upcomingBtn = document.getElementById("upcoming");
 upcomingBtn.addEventListener("click", () => {
   changeTab("upcoming-main", "Upcoming");
 });
+
+const homeBtn = document.getElementById("home");
+
+homeBtn.addEventListener("click", () => {
+  changeTab("today-main", "Today");
+});

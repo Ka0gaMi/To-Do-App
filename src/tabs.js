@@ -3,7 +3,10 @@ import {
   datePickerTextFunctionality,
   getTaskData,
   taskFormFunctionality,
+  checkInboxTasks,
 } from "./task";
+
+import { updateProjectFromArr } from "./project-form";
 
 // Tab creator //
 
@@ -206,14 +209,6 @@ function createProjectSelect() {
   return projectSelect;
 }
 
-function projectSelectOption(project) {
-  const projectSelectOption = document.createElement("option");
-  projectSelectOption.setAttribute("value", project.id);
-  projectSelectOption.textContent = project.title;
-
-  return projectSelectOption;
-}
-
 function createMainFormButtons() {
   const mainFormButtons = document.createElement("div");
   mainFormButtons.classList.add("main-form-buttons");
@@ -305,6 +300,7 @@ function addTab(tabname, title, contentEditable = false) {
   getTaskData();
 
   showButtonFunctionality();
+  updateProjectFromArr();
 }
 
 function removeTab() {
@@ -318,6 +314,9 @@ function removeTab() {
 function changeTab(tabname, title, contentEditable = false) {
   removeTab();
   addTab(tabname, title, contentEditable);
+  if (title === "Inbox") {
+    checkInboxTasks();
+  }
 }
 
 // Show button functionality //
