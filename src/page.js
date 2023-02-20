@@ -1,5 +1,9 @@
 import { changeTab } from "./tabs";
-import { addProjectBtnFunctionality, getProjectData } from "./project-form";
+import {
+  addProjectBtnFunctionality,
+  getProjectData,
+  addProjectsFromProjectArr,
+} from "./project-form";
 
 // Launch page function //
 
@@ -10,6 +14,7 @@ function launchPage() {
   addProjectDropDownContent();
   addProjectBtnFunctionality();
   getProjectData();
+  addProjectsFromProjectArr();
   changeTab("inbox-main", "Inbox", false);
 }
 

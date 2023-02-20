@@ -224,9 +224,38 @@ function addTasksFromProjectArr(projectId) {
   checkDueDateColor();
 }
 
+// Check for projects in projectArr //
+
+function checkForProjectsInProjectArr() {
+  if (Object.keys(projectsArr).length > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// Add projects from projectArr to project dropdown //
+
+function addProjectsFromProjectArr() {
+  if (checkForProjectsInProjectArr()) {
+    for (let project in projectsArr) {
+      const projectDiv = createProjectDiv(
+        projectsArr[project].title,
+        projectsArr[project].id
+      );
+
+      addProjectToDropdown(projectDiv);
+    }
+  } else {
+    return;
+  }
+}
+
 export {
   addProjectBtnFunctionality,
   getProjectData,
   updateProjectFromArr,
   addTaskToProjectArray,
+  addProjectsFromProjectArr,
+  setSelectedProject,
 };
